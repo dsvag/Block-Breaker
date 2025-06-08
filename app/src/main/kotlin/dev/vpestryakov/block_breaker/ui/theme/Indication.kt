@@ -10,7 +10,9 @@ import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.node.DrawModifierNode
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 data object ScaleIndicationNodeFactory : IndicationNodeFactory {
@@ -18,20 +20,27 @@ data object ScaleIndicationNodeFactory : IndicationNodeFactory {
   override fun create(interactionSource: InteractionSource): DelegatableNode = ScaleIndicationNode(interactionSource)
 }
 
-private class ScaleIndicationNode(private val interactionSource: InteractionSource) :
-  Modifier.Node(), DrawModifierNode {
+private class ScaleIndicationNode(
+  private val interactionSource: InteractionSource,
+) : Modifier.Node(), DrawModifierNode {
 
   private val animatedScalePercent = Animatable(1f)
 
   override fun onAttach() {
     coroutineScope.launch {
-      interactionSource.interactions.collectLatest { interaction ->
-        when (interaction) {
-          is PressInteraction.Press -> animateToPressed()
-          is PressInteraction.Release -> animateToResting()
-          is PressInteraction.Cancel -> animateToResting()
+      interactionSource.interactions.firstOrNull()
+      animateToPressed()
+      animateToResting()
+
+      interactionSource.interactions
+        .buffer(capacity = 0, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+        .collect { interaction ->
+          when (interaction) {
+            is PressInteraction.Press -> animateToPressed()
+            is PressInteraction.Release -> animateToResting()
+            is PressInteraction.Cancel -> animateToResting()
+          }
         }
-      }
     }
   }
 

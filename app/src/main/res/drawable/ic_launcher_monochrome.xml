@@ -1,0 +1,92 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Bottom row of blocks with tiny 1x1 gap in the middle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M31,70h7.5c0.9,0 1.6,0.7 1.6,1.6v6.8c0,0.9 -0.7,1.6 -1.6,1.6H31c-0.9,0 -1.6,-0.7 -1.6,-1.6v-6.8c0,-0.9 0.7,-1.6 1.6,-1.6z
+            M41.5,70h6.5c0.9,0 1.6,0.7 1.6,1.6v6.8c0,0.9 -0.7,1.6 -1.6,1.6h-6.5c-0.9,0 -1.6,-0.7 -1.6,-1.6v-6.8c0,-0.9 0.7,-1.6 1.6,-1.6z
+            M60,70h6.5c0.9,0 1.6,0.7 1.6,1.6v6.8c0,0.9 -0.7,1.6 -1.6,1.6H60c-0.9,0 -1.6,-0.7 -1.6,-1.6v-6.8c0,-0.9 0.7,-1.6 1.6,-1.6z
+            M69.5,70h7.5c0.9,0 1.6,0.7 1.6,1.6v6.8c0,0.9 -0.7,1.6 -1.6,1.6h-7.5c-0.9,0 -1.6,-0.7 -1.6,-1.6v-6.8c0,-0.9 0.7,-1.6 1.6,-1.6z" />
+
+    <!-- Outlined tiny 1x1 empty hole -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.3"
+        android:pathData="M51.8,71.2h4.4c0.7,0 1.3,0.6 1.3,1.3v4.4c0,0.7 -0.6,1.3 -1.3,1.3h-4.4c-0.7,0 -1.3,-0.6 -1.3,-1.3v-4.4c0,-0.7 0.6,-1.3 1.3,-1.3z" />
+
+    <!-- Panicking 3x3 block silhouette with cutout eyes and mouth for Android 13+ Themed Icons -->
+    <group
+        android:pivotX="54"
+        android:pivotY="44"
+        android:rotation="-3.5">
+
+        <!-- Outer 3x3 block outline -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="2.8"
+            android:strokeLineJoin="round"
+            android:pathData="M35.5,22.5h37c2.5,0 4.5,2 4.5,4.5v32.5c0,2.5 -2,4.5 -4.5,4.5H58.8L54,69.5L49.2,64H35.5c-2.5,0 -4.5,-2 -4.5,-4.5V27c0,-2.5 2,-4.5 4.5,-4.5z" />
+
+        <!-- Subtle 3x3 grid ticks on the edges -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1.4"
+            android:pathData="M47.3,22.5v5 M60.7,22.5v5 M31,36.8h4 M73,36.8h4 M31,49.8h4 M73,49.8h4" />
+
+        <!-- Bulging eyes (rings) and pupils -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="2.0"
+            android:pathData="
+                M43.5,39.5m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0
+                M64.5,40m-5.6,0a5.6,5.6 0,1 1,11.2 0a5.6,5.6 0,1 1,-11.2 0" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="
+                M45,42.8m-2.3,0a2.3,2.3 0,1 1,4.6 0a2.3,2.3 0,1 1,-4.6 0
+                M63,42.8m-1.8,0a1.8,1.8 0,1 1,3.6 0a1.8,1.8 0,1 1,-3.6 0" />
+
+        <!-- Worried eyebrows -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="2.4"
+            android:strokeLineCap="round"
+            android:pathData="M36,33.5 Q41.5,29 48.5,31.5 M59.5,31.5 Q66,29.5 71,34" />
+
+        <!-- Grimacing mouth with clenched teeth -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1.8"
+            android:pathData="M40.5,51.5 C44,49 49,52 54,49.8 C59,52 64,49 67.5,51.5 C69,52.8 68.5,57.5 66,58.5 C60,60 48,60 42,58.5 C39.5,57.5 39,52.8 40.5,51.5 Z" />
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="1.3"
+            android:pathData="M39.8,54.8 H68.2 M47,50.8 V59 M54,50 V59.4 M61,50.8 V59" />
+    </group>
+
+    <!-- Sweat drops & panic lines -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M26.5,31 C26.5,31 23,35 24.2,37.5 C25.2,39.5 28.2,39.5 29,37.5 C30,35 26.5,31 26.5,31 Z
+            M81.5,27 C81.5,27 78,31 79.2,33.5 C80.2,35.5 83.2,35.5 84,33.5 C85,31 81.5,27 81.5,27 Z
+            M82.5,43 C82.5,43 80,46 80.9,47.8 C81.7,49.2 83.8,49.2 84.4,47.8 C85.2,46 82.5,43 82.5,43 Z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M46.5,66.5 L49.5,69.5 M61.5,66.5 L58.5,69.5" />
+</vector>

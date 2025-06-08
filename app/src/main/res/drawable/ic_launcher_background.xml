@@ -1,2 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<color android:color="#3DDC84" xmlns:android="http://schemas.android.com/apk/res/android"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Warm creamy background from Colors.kt (0xFFFFFEE0) -->
+    <path
+        android:fillColor="#FFFEE0"
+        android:pathData="M0,0h108v108h-108z" />
+
+    <!-- Subtle background 10x10 grid pattern -->
+    <group android:alpha="0.28">
+        <path
+            android:fillColor="#CFCFC4"
+            android:pathData="
+                M14,14h9v9h-9z M25,14h9v9h-9z M36,14h9v9h-9z M47,14h9v9h-9z M58,14h9v9h-9z M69,14h9v9h-9z M80,14h9v9h-9z
+                M14,25h9v9h-9z M80,25h9v9h-9z
+                M14,36h9v9h-9z M80,36h9v9h-9z
+                M14,47h9v9h-9z M80,47h9v9h-9z
+                M14,58h9v9h-9z M80,58h9v9h-9z
+                M14,69h9v9h-9z M80,69h9v9h-9z
+                M14,80h9v9h-9z M25,80h9v9h-9z M36,80h9v9h-9z M47,80h9v9h-9z M58,80h9v9h-9z M69,80h9v9h-9z M80,80h9v9h-9z" />
+    </group>
+</vector>
+

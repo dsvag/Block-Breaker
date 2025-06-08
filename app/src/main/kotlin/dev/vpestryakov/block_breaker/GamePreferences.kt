@@ -1,45 +1,63 @@
 package dev.vpestryakov.block_breaker
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import dev.vpestryakov.block_breaker.dto.Blocks
 import dev.vpestryakov.block_breaker.dto.Field
-import kotlinx.coroutines.flow.filterNotNull
+import dev.vpestryakov.block_breaker.dto.Game
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.map
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "store")
+@Inject
+class GamePreferences(
+  private val dataStore: DataStore<Preferences>
+) {
 
-class GamePreferences(private val dataStore: DataStore<Preferences>) {
+  private val defaultBlocks by lazy { Blocks.random() }
 
-  private val data = dataStore.data
+  private fun parseGame(preferences: Preferences): Game {
+    val score = preferences[ScoreKey] ?: 0L
+    val topScore = maxOf(preferences[TopScoreKey] ?: 0L, score)
+    val field = preferences[FieldKey]?.let { runCatching { Field.Saver.to(it) }.getOrNull() } ?: Field.Empty
+    val blocks = preferences[BlocksKey]?.let { runCatching { Blocks.Saver.to(it) }.getOrNull() } ?: defaultBlocks
+    return Game(
+      field = field,
+      blocks = blocks,
+      score = score,
+      topScore = topScore,
+    )
+  }
 
-  val fieldFlow = data.map { preferences -> preferences[FieldKey]?.let(Field.Saver.to) }.filterNotNull()
+  val gameFlow = dataStore.data.map(::parseGame)
 
-  val scoreFlow = data.map { preferences -> preferences[ScoreKey] }.filterNotNull()
-
-  suspend fun updateField(function: (Field) -> Field) {
+  suspend fun updateGame(function: (Game) -> Game) {
     dataStore.edit { preferences ->
-      val current = preferences[FieldKey]?.let(Field.Saver.to) ?: Field.Empty
+      val current = parseGame(preferences)
       val updated = function(current)
-      preferences[FieldKey] = Field.Saver.from(updated)
+      val updatedTopScore = maxOf(current.topScore, updated.score, updated.topScore)
+      preferences[FieldKey] = Field.Saver.from(updated.field)
+      preferences[BlocksKey] = Blocks.Saver.from(updated.blocks)
+      preferences[ScoreKey] = updated.score
+      preferences[TopScoreKey] = updatedTopScore
     }
   }
 
-  suspend fun updateScore(function: (Long) -> Long) {
+  suspend fun reset() {
     dataStore.edit { preferences ->
-      val current = preferences[ScoreKey] ?: 0L
-      preferences[ScoreKey] = function(current)
+      preferences[FieldKey] = Field.Saver.from(Field.Empty)
+      preferences[ScoreKey] = 0L
+      preferences[BlocksKey] = Blocks.Saver.from(Blocks.random())
     }
   }
 
   companion object {
 
-    private val ScoreKey = longPreferencesKey("Score")
-
+    private val BlocksKey = stringPreferencesKey("Blocks")
     private val FieldKey = stringPreferencesKey("Field")
+    private val ScoreKey = longPreferencesKey("Score")
+    private val TopScoreKey = longPreferencesKey("TopScore")
   }
 }

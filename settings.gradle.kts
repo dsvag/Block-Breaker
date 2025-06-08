@@ -9,7 +9,12 @@ pluginManagement {
         includeGroupByRegex("androidx.*")
       }
     }
-    mavenCentral()
+    mavenCentral {
+      content {
+        includeGroupByRegex("dev\\.zacsweers\\.metro.*")
+      }
+    }
+
     gradlePluginPortal()
   }
 }

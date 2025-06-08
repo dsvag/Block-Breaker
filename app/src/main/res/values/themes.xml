@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.BlockBreaker" parent="android:Theme.Material.Light.NoActionBar"/>
+    <style name="Theme.BlockBreaker" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.BlockBreaker.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFFEE0</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash_icon</item>
+        <item name="windowSplashScreenAnimationDuration">750</item>
+        <item name="postSplashScreenTheme">@style/Theme.BlockBreaker</item>
+    </style>
 </resources>
