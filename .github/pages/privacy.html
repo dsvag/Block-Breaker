@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy / Политика конфиденциальности — Block Breaker</title>
+  <title>Privacy Policy — Block Breaker</title>
   <style>
     :root {
       --bg-primary: #0F111A;
@@ -52,7 +52,7 @@
     .top-nav {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 12px;
       flex-wrap: wrap;
       margin-bottom: 32px;
@@ -83,37 +83,6 @@
       width: 16px;
       height: 16px;
       fill: currentColor;
-    }
-
-    .lang-tabs {
-      display: inline-flex;
-      gap: 6px;
-      padding: 4px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-    }
-
-    .lang-btn {
-      border: none;
-      background: transparent;
-      color: var(--text-secondary);
-      font-family: inherit;
-      font-size: 0.86rem;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease;
-    }
-
-    .lang-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .lang-btn.active {
-      background: rgba(77, 166, 255, 0.18);
-      color: var(--sky);
     }
 
     .hero {
@@ -197,10 +166,6 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
     }
 
-    .policy-card.hidden {
-      display: none;
-    }
-
     .card-header {
       display: flex;
       align-items: center;
@@ -210,29 +175,6 @@
       margin-bottom: 20px;
       border-bottom: 1px solid var(--border-subtle);
       flex-wrap: wrap;
-    }
-
-    .lang-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .pill-en {
-      background: rgba(77, 166, 255, 0.15);
-      color: var(--sky);
-      border: 1px solid rgba(77, 166, 255, 0.3);
-    }
-
-    .pill-ru {
-      background: rgba(155, 123, 255, 0.15);
-      color: var(--lavender);
-      border: 1px solid rgba(155, 123, 255, 0.3);
     }
 
     .card-header h2 {
@@ -363,14 +305,8 @@
     <nav class="top-nav">
       <a href="index.html" class="back-link">
         <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        <span>Назад к загрузкам / Back to Downloads</span>
+        <span>Back to Downloads</span>
       </a>
-
-      <div class="lang-tabs" role="tablist" aria-label="Language filter">
-        <button type="button" class="lang-btn active" data-lang="all">EN + RU</button>
-        <button type="button" class="lang-btn" data-lang="en">English</button>
-        <button type="button" class="lang-btn" data-lang="ru">Русский</button>
-      </div>
     </nav>
 
     <header class="hero">
@@ -392,16 +328,14 @@
 
       <h1>Privacy Policy</h1>
       <p class="subtitle">
-        Политика конфиденциальности приложения <strong>Block Breaker</strong> для Android, iOS, iPadOS, Windows, macOS и Linux.
+        Privacy Policy for <strong>Block Breaker</strong> on Android, iOS, iPadOS, Windows, macOS, and Linux.
       </p>
     </header>
 
     <main class="policy-stack">
-      <!-- ENGLISH SECTION -->
-      <article id="en" class="policy-card" data-lang-card="en" lang="en">
+      <article id="en" class="policy-card" lang="en">
         <div class="card-header">
-          <h2>Privacy Policy (English)</h2>
-          <span class="lang-pill pill-en">English</span>
+          <h2>Privacy Policy</h2>
         </div>
 
         <div class="summary-grid">
@@ -495,131 +429,11 @@
         </section>
       </article>
 
-      <!-- RUSSIAN SECTION -->
-      <article id="ru" class="policy-card" data-lang-card="ru" lang="ru">
-        <div class="card-header">
-          <h2>Политика конфиденциальности (Русский)</h2>
-          <span class="lang-pill pill-ru">Русский</span>
-        </div>
-
-        <div class="summary-grid">
-          <div class="summary-item">
-            <div class="summary-title mint">Локальное хранение</div>
-            <div class="summary-desc">Игровой прогресс, рекорды и настройки темы хранятся только на вашем устройстве.</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title sky">Анонимные отчёты о сбоях</div>
-            <div class="summary-desc">Мобильные версии используют Firebase Crashlytics исключительно для исправления ошибок и повышения стабильности.</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-title coral">Без персональных данных</div>
-            <div class="summary-desc">Мы не собираем личные данные, контакты, геолокацию и рекламные идентификаторы.</div>
-          </div>
-        </div>
-
-        <section class="policy-section">
-          <h3><span class="dot" style="background: var(--sky);"></span>1. Общие положения</h3>
-          <p>
-            Настоящая Политика конфиденциальности описывает, как приложение <strong>Block Breaker</strong> (разработчик — <strong>dsvag</strong>) обрабатывает информацию при использовании мобильных и настольных версий игры. Приложение разработано без регистрации учётных записей и без рекламного отслеживания.
-          </p>
-          <p>
-            <strong>Дата вступления в силу:</strong> 16 ноября 2026 г.
-          </p>
-        </section>
-
-        <section class="policy-section">
-          <h3><span class="dot" style="background: var(--mint);"></span>2. Данные, хранящиеся локально на устройстве</h3>
-          <p>
-            Block Breaker сохраняет игровой прогресс и пользовательские настройки исключительно локально на вашем устройстве с помощью <strong>DataStore Preferences</strong>:
-          </p>
-          <ul>
-            <li>Текущее состояние игрового поля, прогресс игры и лучшие результаты.</li>
-            <li>Выбранная тема оформления и параметры интерфейса.</li>
-          </ul>
-          <p>
-            Эти данные не передаются на внешние серверы и остаются под вашим полным контролем. Вы можете удалить их в любой момент, очистив данные приложения в настройках устройства или удалив приложение.
-          </p>
-        </section>
-
-        <section class="policy-section">
-          <h3><span class="dot" style="background: var(--amber);"></span>3. Отчёты о сбоях и диагностика (Android и iOS)</h3>
-          <p>
-            Для своевременного выявления ошибок и повышения стабильности работы мобильные версии Block Breaker (Android и iOS / iPadOS) используют сервис <strong>Google Firebase Crashlytics</strong>. При возникновении непредвиденного сбоя Crashlytics автоматически собирает исключительно анонимную техническую диагностическую информацию:
-          </p>
-          <ul>
-            <li>Трассировки стека (stack traces) и технические журналы сбоев.</li>
-            <li>Модель устройства, версию операционной системы и версию приложения.</li>
-            <li>Обезличенные технические метаданные сбоя и время возникновения ошибки.</li>
-          </ul>
-          <p>
-            Собранная диагностика используется <strong>исключительно</strong> для устранения ошибок и повышения стабильности приложения. Эти сведения не позволяют установить вашу личность и не используются для рекламы или межсайтового отслеживания. Подробнее о работе сервиса можно узнать в <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">документации по конфиденциальности Firebase</a>.
-          </p>
-          <p>
-            Настольные сборки (Windows, macOS и Linux) хранят данные только локально и не отправляют отчёты о сбоях.
-          </p>
-        </section>
-
-        <section class="policy-section">
-          <h3><span class="dot" style="background: var(--coral);"></span>4. Данные, которые мы не собираем</h3>
-          <p>
-            Приложение Block Breaker <strong>не</strong> собирает, не запрашивает и не передаёт третьим лицам:
-          </p>
-          <ul>
-            <li>Персональные данные (имя, адрес электронной почты, номер телефона, данные учётной записи).</li>
-            <li>Контакты, фотографии, файлы, данные камеры или микрофона.</li>
-            <li>Точную или приблизительную геолокацию.</li>
-            <li>Рекламные идентификаторы (Google Advertising ID / AAID, Apple IDFA) и данные рекламных трекеров.</li>
-          </ul>
-        </section>
-
-        <section class="policy-section">
-          <h3><span class="dot" style="background: var(--lavender);"></span>5. Конфиденциальность детей</h3>
-          <p>
-            Block Breaker не осуществляет осознанный сбор персональных данных детей или любых других пользователей. Использование приложения не требует создания профиля или предоставления личной информации.
-          </p>
-        </section>
-
-        <section class="policy-section">
-          <h3><span class="dot" style="background: var(--teal);"></span>6. Изменения политики и контакты</h3>
-          <p>
-            Мы можем периодически обновлять настоящую Политику конфиденциальности при изменении функциональности приложения. Актуальная версия всегда доступна на этой странице с указанием даты вступления в силу.
-          </p>
-          <p>
-            По всем вопросам, связанным с конфиденциальностью и работой приложения, вы можете связаться с разработчиком по электронной почте
-            <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a>
-            или через официальный репозиторий GitHub:
-            <a href="https://github.com/dsvag/Block-Breaker" target="_blank" rel="noopener noreferrer">https://github.com/dsvag/Block-Breaker</a>.
-          </p>
-        </section>
-      </article>
     </main>
 
     <footer>
-      Block Breaker &bull; <a href="index.html">Скачать приложение / Download Page</a> &bull; <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a> &bull; <a href="https://github.com/dsvag/Block-Breaker" target="_blank" rel="noopener noreferrer">GitHub</a>
+      Block Breaker &bull; <a href="index.html">Download Page</a> &bull; <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a> &bull; <a href="https://github.com/dsvag/Block-Breaker" target="_blank" rel="noopener noreferrer">GitHub</a>
     </footer>
   </div>
-
-  <script>
-    (function () {
-      var buttons = document.querySelectorAll('.lang-btn');
-      var cards = document.querySelectorAll('[data-lang-card]');
-
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var selected = btn.getAttribute('data-lang');
-
-          buttons.forEach(function (b) {
-            b.classList.toggle('active', b === btn);
-          });
-
-          cards.forEach(function (card) {
-            var cardLang = card.getAttribute('data-lang-card');
-            var visible = selected === 'all' || selected === cardLang;
-            card.classList.toggle('hidden', !visible);
-          });
-        });
-      });
-    })();
-  </script>
 </body>
 </html>

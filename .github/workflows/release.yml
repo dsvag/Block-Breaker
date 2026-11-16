@@ -590,15 +590,11 @@ jobs:
           echo "blockbreaker.vpestryakov.dev" > public/CNAME
 
           if [ -d release-assets ]; then
-            APK_FILE=$(find release-assets -name "*.apk" | head -n 1)
-            IPA_FILE=$(find release-assets -name "*.ipa" | head -n 1)
             DMG_FILE=$(find release-assets -name "*.dmg" | head -n 1)
             EXE_FILE=$(find release-assets -name "*.exe" | head -n 1)
             MSI_FILE=$(find release-assets -name "*.msi" | head -n 1)
             DEB_FILE=$(find release-assets -name "*.deb" | head -n 1)
 
-            if [ -n "$APK_FILE" ]; then cp "$APK_FILE" public/downloads/BlockBreaker-android.apk; fi
-            if [ -n "$IPA_FILE" ]; then cp "$IPA_FILE" public/downloads/BlockBreaker-ios.ipa; fi
             if [ -n "$DMG_FILE" ]; then cp "$DMG_FILE" public/downloads/BlockBreaker-macos.dmg; fi
             if [ -n "$EXE_FILE" ]; then cp "$EXE_FILE" public/downloads/BlockBreaker-windows.exe; fi
             if [ -n "$MSI_FILE" ]; then cp "$MSI_FILE" public/downloads/BlockBreaker-windows.msi; fi

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -115,150 +115,6 @@
       font-size: 1.08rem;
       max-width: 560px;
       margin: 0 auto;
-    }
-
-    /* Official Store Badges */
-    .store-section {
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .store-section-label {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-secondary);
-      font-weight: 700;
-    }
-
-    .store-badges {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-
-    .store-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 256px;
-      padding: 12px 16px;
-      border-radius: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-primary);
-      text-decoration: none;
-      text-align: left;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
-      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .store-badge.is-upcoming {
-      opacity: 0.82;
-      cursor: default;
-      background: rgba(24, 27, 40, 0.72);
-      border-style: dashed;
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-
-    .store-badge.is-active {
-      cursor: pointer;
-    }
-
-    .store-badge.is-active:hover {
-      transform: translateY(-2px);
-      background: var(--bg-card-hover);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.42);
-    }
-
-    .store-badge[data-store="appStore"].is-active:hover {
-      border-color: rgba(77, 166, 255, 0.55);
-    }
-
-    .store-badge[data-store="googlePlay"].is-active:hover {
-      border-color: rgba(76, 217, 123, 0.55);
-    }
-
-    .store-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .store-icon svg {
-      width: 21px;
-      height: 21px;
-      fill: currentColor;
-    }
-
-    .store-icon-apple {
-      background: rgba(77, 166, 255, 0.14);
-      color: var(--sky);
-    }
-
-    .store-icon-play {
-      background: rgba(76, 217, 123, 0.14);
-      color: var(--mint);
-    }
-
-    .store-text {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .store-sub {
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      letter-spacing: 0.02em;
-      line-height: 1.2;
-    }
-
-    .store-title {
-      font-size: 0.96rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.25;
-      margin-top: 2px;
-    }
-
-    .store-status-pill {
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(255, 184, 77, 0.14);
-      color: var(--amber);
-      border: 1px solid rgba(255, 184, 77, 0.28);
-      flex-shrink: 0;
-    }
-
-    .store-badge.is-active .store-status-pill {
-      display: none;
-    }
-
-    .store-arrow {
-      display: none;
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-      color: var(--text-secondary);
-      flex-shrink: 0;
-    }
-
-    .store-badge.is-active .store-arrow {
-      display: block;
     }
 
     /* Recommended OS Banner */
@@ -421,6 +277,19 @@
       border: 1px solid var(--border-subtle);
     }
 
+    .dl-btn.is-upcoming {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .dl-btn.is-upcoming:hover {
+      filter: none;
+      transform: none;
+    }
+
     .dl-btn svg {
       width: 18px;
       height: 18px;
@@ -465,54 +334,25 @@
 
       <h1>Block Breaker</h1>
       <p class="subtitle">
-        10×10 Block Puzzle для всех платформ. Скачайте установочный пакет для вашего устройства.
+        10×10 Block Puzzle for all platforms. Get it on official mobile stores or download a desktop installer for your device.
       </p>
-
-      <div class="store-section" aria-label="Магазины приложений / Official Stores">
-        <div class="store-section-label">Магазины приложений / App Stores</div>
-        <div class="store-badges">
-          <a class="store-badge is-upcoming" data-store="appStore" aria-disabled="true" tabindex="-1">
-            <span class="store-icon store-icon-apple" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.96 6.33c.67-.81 1.12-1.94 1-3.08-.96.04-2.13.64-2.82 1.45-.61.7-.11 1.85-.99 2.97 1.08.08 2.14-.53 2.81-1.34"/></svg>
-            </span>
-            <span class="store-text">
-              <span class="store-sub">Coming Soon</span>
-              <span class="store-title">Скоро в App Store</span>
-            </span>
-            <span class="store-status-pill">Скоро</span>
-            <svg class="store-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h5v2H7v10h10v-3h2v5H5V5z"/></svg>
-          </a>
-
-          <a class="store-badge is-upcoming" data-store="googlePlay" aria-disabled="true" tabindex="-1">
-            <span class="store-icon store-icon-play" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/></svg>
-            </span>
-            <span class="store-text">
-              <span class="store-sub">Coming Soon</span>
-              <span class="store-title">Скоро в Google Play</span>
-            </span>
-            <span class="store-status-pill">Скоро</span>
-            <svg class="store-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h5v2H7v10h10v-3h2v5H5V5z"/></svg>
-          </a>
-        </div>
-      </div>
     </header>
 
     <!-- Auto-detected OS Banner -->
     <div id="recommended-banner" class="recommended-box">
       <div class="recommended-info">
         <div>
-          <div class="recommended-label">Рекомендуется для вашей системы</div>
-          <div id="recommended-os-name" class="recommended-title">Скачать Block Breaker</div>
+          <div class="recommended-label">Recommended for your system</div>
+          <div id="recommended-os-name" class="recommended-title">Download Block Breaker</div>
         </div>
       </div>
-      <a id="recommended-os-link" href="#" class="dl-btn btn-primary-sky" download>
-        <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-        <span id="recommended-os-btn-text">Скачать</span>
+      <a id="recommended-os-link" href="#" class="dl-btn btn-primary-sky">
+        <svg id="recommended-os-icon" viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
+        <span id="recommended-os-btn-text">Download</span>
       </a>
     </div>
 
-    <div class="section-title">Все платформы / All Platforms</div>
+    <div class="section-title">All Platforms</div>
 
     <main class="platforms-grid">
       <!-- Android -->
@@ -523,13 +363,13 @@
           </div>
           <div>
             <div class="platform-name">Android</div>
-            <div class="platform-meta">Android 7.0+ (Phone &amp; Tablet)</div>
+            <div class="platform-meta">Android 7.0+ (Google Play)</div>
           </div>
         </div>
         <div class="btn-group">
-          <a href="downloads/BlockBreaker-android.apk" class="dl-btn btn-primary-mint" download>
-            <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-            Скачать .APK
+          <a class="dl-btn btn-primary-mint store-card-btn is-upcoming" data-store="googlePlay" aria-disabled="true" tabindex="-1">
+            <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h5v2H7v10h10v-3h2v5H5V5z"/></svg>
+            <span class="store-card-btn-text">Google Play (Soon)</span>
           </a>
         </div>
       </article>
@@ -542,13 +382,13 @@
           </div>
           <div>
             <div class="platform-name">iOS &amp; iPadOS</div>
-            <div class="platform-meta">iPhone &amp; iPad (ARM64 .IPA)</div>
+            <div class="platform-meta">iPhone &amp; iPad (App Store)</div>
           </div>
         </div>
         <div class="btn-group">
-          <a href="downloads/BlockBreaker-ios.ipa" class="dl-btn btn-primary-sky" download>
-            <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-            Скачать .IPA
+          <a class="dl-btn btn-primary-sky store-card-btn is-upcoming" data-store="appStore" aria-disabled="true" tabindex="-1">
+            <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h5v2H7v10h10v-3h2v5H5V5z"/></svg>
+            <span class="store-card-btn-text">App Store (Soon)</span>
           </a>
         </div>
       </article>
@@ -567,7 +407,7 @@
         <div class="btn-group">
           <a href="downloads/BlockBreaker-windows.exe" class="dl-btn btn-primary-teal" download>
             <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-            Скачать .EXE
+            Download .EXE
           </a>
           <a href="downloads/BlockBreaker-windows.msi" class="dl-btn btn-secondary" download>
             .MSI
@@ -589,7 +429,7 @@
         <div class="btn-group">
           <a href="downloads/BlockBreaker-macos.dmg" class="dl-btn btn-primary-lavender" download>
             <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-            Скачать .DMG
+            Download .DMG
           </a>
         </div>
       </article>
@@ -608,7 +448,7 @@
         <div class="btn-group">
           <a href="downloads/BlockBreaker-linux.deb" class="dl-btn btn-primary-amber" download>
             <svg viewBox="0 0 24 24"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-            Скачать .DEB
+            Download .DEB
           </a>
         </div>
       </article>
@@ -617,7 +457,7 @@
     <footer>
       <div>Block Breaker __VERSION__ &bull; Multiplatform Build (Android, iOS, Windows, macOS, Linux)</div>
       <div style="margin-top: 8px;">
-        <a href="privacy.html">Политика конфиденциальности / Privacy Policy</a>
+        <a href="privacy.html">Privacy Policy</a>
         &bull;
         <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a>
       </div>
@@ -630,47 +470,39 @@
     (function () {
       var storeMeta = {
         appStore: {
-          activeSub: 'Загрузить в',
-          activeTitle: 'App Store',
-          upcomingSub: 'Coming Soon',
-          upcomingTitle: 'Скоро в App Store'
+          cardActiveBtn: 'Download on the App Store',
+          cardUpcomingBtn: 'App Store (Soon)'
         },
         googlePlay: {
-          activeSub: 'Доступно в',
-          activeTitle: 'Google Play',
-          upcomingSub: 'Coming Soon',
-          upcomingTitle: 'Скоро в Google Play'
+          cardActiveBtn: 'Get it on Google Play',
+          cardUpcomingBtn: 'Google Play (Soon)'
         }
       };
 
       Object.keys(storeMeta).forEach(function (key) {
-        var el = document.querySelector('.store-badge[data-store="' + key + '"]');
-        if (!el) return;
-        var url = typeof STORE_LINKS[key] === 'string' ? STORE_LINKS[key].trim() : '';
-        var subEl = el.querySelector('.store-sub');
-        var titleEl = el.querySelector('.store-title');
         var meta = storeMeta[key];
+        var url = typeof STORE_LINKS[key] === 'string' ? STORE_LINKS[key].trim() : '';
 
-        if (url) {
-          el.classList.remove('is-upcoming');
-          el.classList.add('is-active');
-          el.setAttribute('href', url);
-          el.setAttribute('target', '_blank');
-          el.setAttribute('rel', 'noopener noreferrer');
-          el.setAttribute('aria-disabled', 'false');
-          el.removeAttribute('tabindex');
-          if (subEl) subEl.textContent = meta.activeSub;
-          if (titleEl) titleEl.textContent = meta.activeTitle;
-        } else {
-          el.classList.add('is-upcoming');
-          el.classList.remove('is-active');
-          el.removeAttribute('href');
-          el.removeAttribute('target');
-          el.removeAttribute('rel');
-          el.setAttribute('aria-disabled', 'true');
-          el.setAttribute('tabindex', '-1');
-          if (subEl) subEl.textContent = meta.upcomingSub;
-          if (titleEl) titleEl.textContent = meta.upcomingTitle;
+        var cardBtn = document.querySelector('.store-card-btn[data-store="' + key + '"]');
+        if (cardBtn) {
+          var cardBtnText = cardBtn.querySelector('.store-card-btn-text');
+          if (url) {
+            cardBtn.classList.remove('is-upcoming');
+            cardBtn.setAttribute('href', url);
+            cardBtn.setAttribute('target', '_blank');
+            cardBtn.setAttribute('rel', 'noopener noreferrer');
+            cardBtn.setAttribute('aria-disabled', 'false');
+            cardBtn.removeAttribute('tabindex');
+            if (cardBtnText) cardBtnText.textContent = meta.cardActiveBtn;
+          } else {
+            cardBtn.classList.add('is-upcoming');
+            cardBtn.removeAttribute('href');
+            cardBtn.removeAttribute('target');
+            cardBtn.removeAttribute('rel');
+            cardBtn.setAttribute('aria-disabled', 'true');
+            cardBtn.setAttribute('tabindex', '-1');
+            if (cardBtnText) cardBtnText.textContent = meta.cardUpcomingBtn;
+          }
         }
       });
 
@@ -678,39 +510,46 @@
       var platform = null;
 
       if (/android/i.test(ua)) {
+        var playUrl = typeof STORE_LINKS.googlePlay === 'string' ? STORE_LINKS.googlePlay.trim() : '';
         platform = {
           key: 'android',
-          title: 'Block Breaker для Android',
-          btn: 'Скачать .APK',
-          href: 'downloads/BlockBreaker-android.apk'
+          title: 'Block Breaker for Android',
+          btn: playUrl ? 'Get it on Google Play' : 'Google Play (Soon)',
+          href: playUrl,
+          isStore: true
         };
       } else if (/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        var appStoreUrl = typeof STORE_LINKS.appStore === 'string' ? STORE_LINKS.appStore.trim() : '';
         platform = {
           key: 'ios',
-          title: 'Block Breaker для iOS & iPadOS',
-          btn: 'Скачать .IPA',
-          href: 'downloads/BlockBreaker-ios.ipa'
+          title: 'Block Breaker for iOS & iPadOS',
+          btn: appStoreUrl ? 'Download on the App Store' : 'App Store (Soon)',
+          href: appStoreUrl,
+          isStore: true
         };
       } else if (/Win/i.test(ua)) {
         platform = {
           key: 'windows',
-          title: 'Block Breaker для Windows',
-          btn: 'Скачать .EXE',
-          href: 'downloads/BlockBreaker-windows.exe'
+          title: 'Block Breaker for Windows',
+          btn: 'Download .EXE',
+          href: 'downloads/BlockBreaker-windows.exe',
+          isStore: false
         };
       } else if (/Mac/i.test(ua)) {
         platform = {
           key: 'macos',
-          title: 'Block Breaker для macOS',
-          btn: 'Скачать .DMG',
-          href: 'downloads/BlockBreaker-macos.dmg'
+          title: 'Block Breaker for macOS',
+          btn: 'Download .DMG',
+          href: 'downloads/BlockBreaker-macos.dmg',
+          isStore: false
         };
       } else if (/Linux/i.test(ua)) {
         platform = {
           key: 'linux',
-          title: 'Block Breaker для Linux',
-          btn: 'Скачать .DEB',
-          href: 'downloads/BlockBreaker-linux.deb'
+          title: 'Block Breaker for Linux',
+          btn: 'Download .DEB',
+          href: 'downloads/BlockBreaker-linux.deb',
+          isStore: false
         };
       }
 
@@ -719,10 +558,39 @@
         var osName = document.getElementById('recommended-os-name');
         var osLink = document.getElementById('recommended-os-link');
         var osBtnText = document.getElementById('recommended-os-btn-text');
+        var osIcon = document.getElementById('recommended-os-icon');
 
         osName.textContent = platform.title;
-        osLink.href = platform.href;
         osBtnText.textContent = platform.btn;
+
+        if (platform.isStore) {
+          osIcon.innerHTML = '<path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h5v2H7v10h10v-3h2v5H5V5z"/>';
+          osLink.removeAttribute('download');
+          if (platform.href) {
+            osLink.classList.remove('is-upcoming');
+            osLink.setAttribute('href', platform.href);
+            osLink.setAttribute('target', '_blank');
+            osLink.setAttribute('rel', 'noopener noreferrer');
+            osLink.setAttribute('aria-disabled', 'false');
+            osLink.removeAttribute('tabindex');
+          } else {
+            osLink.classList.add('is-upcoming');
+            osLink.removeAttribute('href');
+            osLink.removeAttribute('target');
+            osLink.removeAttribute('rel');
+            osLink.setAttribute('aria-disabled', 'true');
+            osLink.setAttribute('tabindex', '-1');
+          }
+        } else {
+          osLink.classList.remove('is-upcoming');
+          osLink.setAttribute('href', platform.href);
+          osLink.setAttribute('download', '');
+          osLink.removeAttribute('target');
+          osLink.removeAttribute('rel');
+          osLink.setAttribute('aria-disabled', 'false');
+          osLink.removeAttribute('tabindex');
+        }
+
         banner.classList.add('visible');
 
         var card = document.querySelector('.platform-card[data-os="' + platform.key + '"]');

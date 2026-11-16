@@ -7,7 +7,12 @@ plugins {
   alias(libs.plugins.metro)
 }
 
-if (file("google-services.json").exists()) {
+val googleServicesFile = file("google-services.json")
+val hasGoogleServices = googleServicesFile.exists()
+val hasDebugGoogleServices = hasGoogleServices &&
+  googleServicesFile.readText().contains("\"dev.vpestryakov.block_breaker.dev\"")
+
+if (hasGoogleServices) {
   apply(plugin = libs.plugins.google.services.get().pluginId)
   apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
 }
@@ -60,6 +65,11 @@ android {
       isMinifyEnabled = false
       isShrinkResources = false
       applicationIdSuffix = ".dev"
+      if (hasGoogleServices && !hasDebugGoogleServices) {
+        (this as ExtensionAware).extensions
+          .findByType(com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension::class.java)
+          ?.mappingFileUploadEnabled = false
+      }
     }
 
     release {
@@ -111,4 +121,14 @@ dependencies {
   implementation(libs.kotlinx.coroutines.android)
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.metrox.viewmodel.compose)
+}
+
+if (hasGoogleServices && !hasDebugGoogleServices) {
+  tasks.matching {
+    it.name.contains("DebugGoogleServices") ||
+      it.name.contains("DebugCrashlytics") ||
+      (it.name.contains("Crashlytics") && it.name.endsWith("Debug"))
+  }.configureEach {
+    enabled = false
+  }
 }
