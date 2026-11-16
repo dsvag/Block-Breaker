@@ -302,6 +302,22 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
+      - name: Cache Kotlin/Native toolchain
+        uses: actions/cache@v6
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: |
+            konan-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Cache SwiftPM packages
+        uses: actions/cache@v6
+        with:
+          path: ~/.xcode-derived/SourcePackages
+          key: spm-${{ runner.os }}-${{ hashFiles('iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-
+
       - name: Resolve iOS Version
         env:
           BUILD_NUMBER_OFFSET: ${{ vars.BUILD_NUMBER_OFFSET || '0' }}
@@ -374,6 +390,7 @@ jobs:
               -scheme iosApp \
               -configuration Release \
               -sdk iphoneos \
+              -derivedDataPath "$HOME/.xcode-derived" \
               -archivePath "$RUNNER_TEMP/BlockBreaker.xcarchive" \
               MARKETING_VERSION="$IOS_MARKETING_VERSION" \
               CURRENT_PROJECT_VERSION="$IOS_BUILD_NUMBER" \
@@ -416,6 +433,7 @@ jobs:
               -scheme iosApp \
               -configuration Release \
               -sdk iphoneos \
+              -derivedDataPath "$HOME/.xcode-derived" \
               -archivePath "$RUNNER_TEMP/BlockBreaker.xcarchive" \
               MARKETING_VERSION="$IOS_MARKETING_VERSION" \
               CURRENT_PROJECT_VERSION="$IOS_BUILD_NUMBER" \
