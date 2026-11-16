@@ -283,12 +283,15 @@ jobs:
 
   ios:
     name: iOS & iPadOS (.ipa)
-    runs-on: macos-15-intel
+    runs-on: macos-26
     outputs:
       export_method: ${{ steps.ios_build.outputs.export_method }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+
+      - name: Check Xcode version
+        run: xcodebuild -version && xcodebuild -showsdks | grep iphoneos
 
       - name: Set up JDK 21
         uses: actions/setup-java@v6
@@ -474,7 +477,7 @@ jobs:
 
   publish-app-store:
     name: Publish to App Store Connect (TestFlight)
-    runs-on: macos-15-intel
+    runs-on: macos-26
     needs: ios
     if: ${{ !cancelled() && needs.ios.result == 'success' && (startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && (github.event.inputs.publish_stores == 'true' || inputs.publish_stores == true))) }}
     steps:
