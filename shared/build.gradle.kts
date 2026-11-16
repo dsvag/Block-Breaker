@@ -37,7 +37,7 @@ kotlin {
     iosTarget.binaries.framework {
       baseName = "Shared"
       isStatic = true
-      binaryOption("bundleId", "dev.vpestryakov.block_breaker.shared")
+      binaryOption("bundleId", "dev.vpestryakov.blockbreaker.shared")
     }
   }
 

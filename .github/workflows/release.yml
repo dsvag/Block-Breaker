@@ -1,0 +1,431 @@
+name: Multiplatform Release & Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.0)'
+        required: false
+        default: '1.0.0'
+        type: string
+      create_release:
+        description: 'Create GitHub Release with all installers'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  PACKAGE_VERSION: ${{ github.event.inputs.version || github.ref_name }}
+
+jobs:
+  android:
+    name: Android (APK & AAB)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Decode Android Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > release.jks
+            echo "KEYSTORE_FILE=release.jks" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build Signed Release APK & AAB
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew :app:assembleRelease :app:bundleRelease
+
+      - name: Prepare Android artifacts
+        run: |
+          mkdir -p dist/android
+          find app/build/outputs/apk/release -name "*.apk" -exec cp {} dist/android/ \;
+          find app/build/outputs/bundle/release -name "*.aab" -exec cp {} dist/android/ \;
+
+      - name: Upload Android artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-release
+          path: |
+            dist/android/*.apk
+            dist/android/*.aab
+          if-no-files-found: error
+
+  macos:
+    name: macOS (.dmg)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Import Apple Developer ID Certificate
+        env:
+          MACOS_CERTIFICATE_P12_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          if [ -n "$MACOS_CERTIFICATE_P12_BASE64" ]; then
+            KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+            KEYCHAIN_PASS="$(uuidgen)"
+            echo "$MACOS_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+
+            security create-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+            security unlock-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security import "$RUNNER_TEMP/certificate.p12" -P "$MACOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+            echo "MACOS_KEYCHAIN=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build & Sign macOS DMG
+        env:
+          MACOS_SIGN_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_PASSWORD: ${{ secrets.MACOS_NOTARIZATION_PASSWORD }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
+        run: |
+          if [ -n "$MACOS_SIGN_IDENTITY" ]; then
+            ./gradlew :shared:packageReleaseDmg
+            if [ -n "$MACOS_NOTARIZATION_APPLE_ID" ] && [ -n "$MACOS_NOTARIZATION_PASSWORD" ] && [ -n "$MACOS_NOTARIZATION_TEAM_ID" ]; then
+              ./gradlew :shared:notarizeDmg
+            fi
+          else
+            ./gradlew :shared:createReleaseDistributable
+            APP_PATH=$(find shared/build/compose/binaries/main-release/app -maxdepth 1 -name "*.app" | head -n 1)
+            if [ -n "$APP_PATH" ]; then
+              codesign --force --deep --sign - "$APP_PATH"
+            fi
+            ./gradlew :shared:packageReleaseDmg
+          fi
+
+      - name: Prepare macOS artifacts
+        run: |
+          mkdir -p dist/macos
+          find shared/build/compose/binaries/main-release/dmg -name "*.dmg" -exec cp {} dist/macos/ \;
+
+      - name: Upload macOS DMG artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: macos-release
+          path: dist/macos/*.dmg
+          if-no-files-found: error
+
+  windows:
+    name: Windows (.msi & .exe)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build Windows MSI & EXE
+        run: ./gradlew :shared:packageReleaseMsi :shared:packageReleaseExe
+
+      - name: Sign Windows Installers (Authenticode)
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE_PFX_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_PFX_BASE64 }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          if ($env:WINDOWS_CERTIFICATE_PFX_BASE64) {
+            $certPath = Join-Path $env:RUNNER_TEMP "windows-cert.pfx"
+            [IO.File]::WriteAllBytes($certPath, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE_PFX_BASE64))
+
+            $signtool = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Filter "signtool.exe" -Recurse |
+              Where-Object { $_.FullName -match "x64" } |
+              Sort-Object FullName -Descending |
+              Select-Object -First 1 -ExpandProperty FullName
+
+            $installers = Get-ChildItem -Path "shared/build/compose/binaries/main-release" -Include *.msi,*.exe -Recurse
+            foreach ($file in $installers) {
+              & $signtool sign /f $certPath /p $env:WINDOWS_CERTIFICATE_PASSWORD /fd SHA256 /tr "http://timestamp.digicert.com" /td SHA256 $file.FullName
+            }
+            Remove-Item $certPath -Force
+          }
+
+      - name: Prepare Windows artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "dist/windows" | Out-Null
+          Get-ChildItem -Path "shared/build/compose/binaries/main-release" -Include *.msi,*.exe -Recurse |
+            Copy-Item -Destination "dist/windows/"
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-release
+          path: |
+            dist/windows/*.msi
+            dist/windows/*.exe
+          if-no-files-found: error
+
+  linux:
+    name: Linux (.deb)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build Linux DEB Package
+        run: ./gradlew :shared:packageReleaseDeb
+
+      - name: Prepare Linux artifacts
+        run: |
+          mkdir -p dist/linux
+          find shared/build/compose/binaries/main-release/deb -name "*.deb" -exec cp {} dist/linux/ \;
+
+      - name: Upload Linux DEB artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-release
+          path: dist/linux/*.deb
+          if-no-files-found: error
+
+  ios:
+    name: iOS & iPadOS (.ipa)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Import iOS Certificate & Provisioning Profile
+        env:
+          IOS_CERTIFICATE_P12_BASE64: ${{ secrets.IOS_CERTIFICATE_P12_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          if [ -n "$IOS_CERTIFICATE_P12_BASE64" ] && [ -n "$IOS_PROVISIONING_PROFILE_BASE64" ]; then
+            KEYCHAIN_PATH="$RUNNER_TEMP/ios-build.keychain-db"
+            KEYCHAIN_PASS="$(uuidgen)"
+            echo "$IOS_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/ios-cert.p12"
+
+            security create-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+            security unlock-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security import "$RUNNER_TEMP/ios-cert.p12" -P "$IOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+            security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+            PROFILES_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
+            mkdir -p "$PROFILES_DIR"
+            PROFILE_PATH="$RUNNER_TEMP/profile.mobileprovision"
+            echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
+            UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< $(/usr/bin/security cms -D -i "$PROFILE_PATH"))
+            cp "$PROFILE_PATH" "$PROFILES_DIR/$UUID.mobileprovision"
+            echo "PROFILE_UUID=$UUID" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build iOS Archive & IPA
+        env:
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+        run: |
+          mkdir -p dist/ios
+          if [ -n "$PROFILE_UUID" ] && [ -n "$IOS_TEAM_ID" ]; then
+            xcodebuild -project iosApp/iosApp.xcodeproj \
+              -scheme iosApp \
+              -configuration Release \
+              -sdk iphoneos \
+              -archivePath "$RUNNER_TEMP/BlockBreaker.xcarchive" \
+              DEVELOPMENT_TEAM="$IOS_TEAM_ID" \
+              CODE_SIGN_STYLE=Manual \
+              PROVISIONING_PROFILE_SPECIFIER="$PROFILE_UUID" \
+              archive
+
+            cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>release-testing</string>
+              <key>teamID</key>
+              <string>$IOS_TEAM_ID</string>
+              <key>signingStyle</key>
+              <string>manual</string>
+              <key>provisioningProfiles</key>
+              <dict>
+                  <key>dev.vpestryakov.blockbreaker</key>
+                  <string>$PROFILE_UUID</string>
+              </dict>
+          </dict>
+          </plist>
+          EOF
+
+            xcodebuild -exportArchive \
+              -archivePath "$RUNNER_TEMP/BlockBreaker.xcarchive" \
+              -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+              -exportPath dist/ios
+          else
+            xcodebuild -project iosApp/iosApp.xcodeproj \
+              -scheme iosApp \
+              -configuration Release \
+              -sdk iphoneos \
+              -archivePath "$RUNNER_TEMP/BlockBreaker.xcarchive" \
+              CODE_SIGNING_ALLOWED=NO \
+              CODE_SIGNING_REQUIRED=NO \
+              CODE_SIGN_IDENTITY="" \
+              archive
+
+            rm -rf "$RUNNER_TEMP/Payload"
+            mkdir -p "$RUNNER_TEMP/Payload"
+            cp -R "$RUNNER_TEMP/BlockBreaker.xcarchive/Products/Applications/BlockBreaker.app" "$RUNNER_TEMP/Payload/"
+            (cd "$RUNNER_TEMP" && zip -qry "$GITHUB_WORKSPACE/dist/ios/BlockBreaker-ios-unsigned.ipa" Payload)
+          fi
+
+      - name: Upload iOS IPA artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-release
+          path: dist/ios/*.ipa
+          if-no-files-found: error
+
+  publish-release:
+    name: Publish Release & GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [android, macos, windows, linux, ios]
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Determine Release Tag
+        id: tag
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            VERSION="${{ github.event.inputs.version || '1.0.0' }}"
+            VERSION="${VERSION#v}"
+            TAG="v${VERSION}"
+          fi
+          echo "tag_name=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          name: Block Breaker ${{ steps.tag.outputs.tag_name }}
+          generate_release_notes: true
+          files: |
+            release-assets/*.apk
+            release-assets/*.aab
+            release-assets/*.dmg
+            release-assets/*.msi
+            release-assets/*.exe
+            release-assets/*.deb
+            release-assets/*.ipa
+          body: |
+            **Block Breaker** — 10×10 Block Puzzle game built with Kotlin Multiplatform & Compose Multiplatform for Android, iOS, iPadOS, Windows, macOS, and Linux.
+
+            🌐 **Download Landing Page (GitHub Pages)**: [https://dsvag.github.io/Block-Breaker/](https://dsvag.github.io/Block-Breaker/)
+
+            ### Downloads by Platform
+            - **Android**: Download the `.apk` file to install directly on your phone/tablet (or `.aab` for Google Play).
+            - **macOS**: Download the `.dmg` installer and drag **Block Breaker** to Applications.
+            - **Windows**: Download the `.msi` or `.exe` installer.
+            - **Linux**: Download the `.deb` package (`sudo dpkg -i block-breaker_*.deb`).
+            - **iOS / iPadOS**: Download the `.ipa` package.
+
+      - name: Prepare GitHub Pages site & installers
+        run: |
+          mkdir -p public/downloads
+          touch public/.nojekyll
+
+          APK_FILE=$(find release-assets -name "*.apk" | head -n 1)
+          IPA_FILE=$(find release-assets -name "*.ipa" | head -n 1)
+          DMG_FILE=$(find release-assets -name "*.dmg" | head -n 1)
+          EXE_FILE=$(find release-assets -name "*.exe" | head -n 1)
+          MSI_FILE=$(find release-assets -name "*.msi" | head -n 1)
+          DEB_FILE=$(find release-assets -name "*.deb" | head -n 1)
+
+          [ -n "$APK_FILE" ] && cp "$APK_FILE" public/downloads/BlockBreaker-android.apk
+          [ -n "$IPA_FILE" ] && cp "$IPA_FILE" public/downloads/BlockBreaker-ios.ipa
+          [ -n "$DMG_FILE" ] && cp "$DMG_FILE" public/downloads/BlockBreaker-macos.dmg
+          [ -n "$EXE_FILE" ] && cp "$EXE_FILE" public/downloads/BlockBreaker-windows.exe
+          [ -n "$MSI_FILE" ] && cp "$MSI_FILE" public/downloads/BlockBreaker-windows.msi
+          [ -n "$DEB_FILE" ] && cp "$DEB_FILE" public/downloads/BlockBreaker-linux.deb
+
+          sed "s/__VERSION__/${{ steps.tag.outputs.tag_name }}/g" .github/pages/index.html > public/index.html
+
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        continue-on-error: true
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages (Actions mode)
+        id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+

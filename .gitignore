@@ -52,3 +52,4 @@ Pods/
 *.dSYM.zip
 *.dSYM
 *.app
+/skills/
