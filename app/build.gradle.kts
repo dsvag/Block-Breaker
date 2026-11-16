@@ -7,12 +7,28 @@ plugins {
   alias(libs.plugins.metro)
 }
 
+if (file("google-services.json").exists()) {
+  apply(plugin = libs.plugins.google.services.get().pluginId)
+  apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
+}
+
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties().apply {
   if (keystorePropertiesFile.exists()) {
     keystorePropertiesFile.inputStream().use(::load)
   }
 }
+
+val appVersionCode = providers.gradleProperty("versionCode")
+  .orElse(providers.environmentVariable("ANDROID_VERSION_CODE"))
+  .map { it.trim().toInt() }
+  .getOrElse(1)
+
+val appVersionName = providers.gradleProperty("versionName")
+  .orElse(providers.environmentVariable("PACKAGE_VERSION"))
+  .map { it.trim().removePrefix("v") }
+  .filter { it.isNotEmpty() }
+  .getOrElse("1.0.0")
 
 android {
   namespace = "dev.vpestryakov.block_breaker"
@@ -22,8 +38,8 @@ android {
     applicationId = "dev.vpestryakov.block_breaker"
     minSdk = libs.versions.sdk.min.get().toInt()
     targetSdk = libs.versions.sdk.target.get().toInt()
-    versionCode = 1
-    versionName = "1.0"
+    versionCode = appVersionCode
+    versionName = appVersionName
   }
 
   signingConfigs {
@@ -79,6 +95,8 @@ kotlin {
 
 dependencies {
   implementation(project(":shared"))
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.crashlytics)
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.compose.animation)
   implementation(libs.androidx.compose.foundation)

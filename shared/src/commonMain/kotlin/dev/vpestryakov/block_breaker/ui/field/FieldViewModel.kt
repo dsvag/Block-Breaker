@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.vpestryakov.block_breaker.CrashReporter
 import dev.vpestryakov.block_breaker.GamePreferences
 import dev.vpestryakov.block_breaker.dto.Block
 import dev.vpestryakov.block_breaker.dto.Blocks
@@ -11,19 +12,21 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
+import kotlin.coroutines.cancellation.CancellationException
+import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
-import kotlin.time.Duration.Companion.milliseconds
 
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
 class FieldViewModel(
   private val preferences: GamePreferences,
+  private val crashReporter: CrashReporter,
 ) : ViewModel() {
 
   val game =
@@ -38,8 +41,14 @@ class FieldViewModel(
 
   fun resetGame() {
     viewModelScope.launch {
-      preferences.reset()
-      effects.emit(Effect.ResetPosition)
+      crashReporter.log("Game reset")
+      runCatching {
+        preferences.reset()
+        effects.emit(Effect.ResetPosition)
+      }.onFailure { throwable ->
+        if (throwable is CancellationException) throw throwable
+        crashReporter.recordException(throwable)
+      }
     }
   }
 
@@ -74,7 +83,12 @@ class FieldViewModel(
 
   fun commitPlaceBlock(blockIndex: Int, coordinates: IntOffset) {
     viewModelScope.launch {
-      placeBlock(blockIndex = blockIndex, coordinates = coordinates)
+      runCatching {
+        placeBlock(blockIndex = blockIndex, coordinates = coordinates)
+      }.onFailure { throwable ->
+        if (throwable is CancellationException) throw throwable
+        crashReporter.recordException(throwable)
+      }
     }
   }
 

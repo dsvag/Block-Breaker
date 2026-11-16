@@ -16,5 +16,8 @@ data class Saver<I : Any, O : Any>(
     to = to,
   )
 
-  fun toOrDefault(o: O?): I = o?.let { runCatching { to(it) }.getOrNull() } ?: default()
+  fun toOrDefault(
+    o: O?,
+    onFailure: (Throwable) -> Unit = {},
+  ): I = o?.let { runCatching { to(it) }.onFailure(onFailure).getOrNull() } ?: default()
 }

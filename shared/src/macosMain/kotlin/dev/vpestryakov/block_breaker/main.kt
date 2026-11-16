@@ -12,7 +12,10 @@ import platform.AppKit.NSWindowStyleMaskResizable
 import platform.Foundation.NSMakeSize
 
 private val appComponent: SharedAppComponent by lazy {
-  createGraphFactory<SharedAppComponent.Factory>().create(platformDataStore)
+  createGraphFactory<SharedAppComponent.Factory>().create(
+    dataStore = platformDataStore,
+    crashReporter = NoOpCrashReporter,
+  )
 }
 
 @OptIn(ExperimentalForeignApi::class)

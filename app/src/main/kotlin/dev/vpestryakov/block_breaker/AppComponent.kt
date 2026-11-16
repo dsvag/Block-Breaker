@@ -16,6 +16,7 @@ import kotlin.reflect.KClass
 interface AppComponent : ViewModelGraph {
 
   val activityComponent: ActivityComponent
+  val androidCrashReporter: AndroidCrashReporter
 
   @Provides
   fun provideDataStore(context: Context): DataStore<Preferences> = context.dataStore

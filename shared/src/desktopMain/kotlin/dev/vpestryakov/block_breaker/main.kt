@@ -10,7 +10,10 @@ import dev.vpestryakov.block_breaker.utils.platformDataStore
 import dev.zacsweers.metro.createGraphFactory
 
 private val appComponent: SharedAppComponent by lazy {
-  createGraphFactory<SharedAppComponent.Factory>().create(platformDataStore)
+  createGraphFactory<SharedAppComponent.Factory>().create(
+    dataStore = platformDataStore,
+    crashReporter = NoOpCrashReporter,
+  )
 }
 
 fun main() = application {

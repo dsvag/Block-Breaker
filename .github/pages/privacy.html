@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy / Политика конфиденциальности — Block Breaker</title>
+  <style>
+    :root {
+      --bg-primary: #0F111A;
+      --bg-card: #181B28;
+      --bg-card-hover: #212538;
+      --bg-board: #141722;
+      --text-primary: #F3F5FF;
+      --text-secondary: #9AA3C2;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --coral: #FF6B6B;
+      --amber: #FFB84D;
+      --mint: #4CD97B;
+      --teal: #38C6BD;
+      --sky: #4DA6FF;
+      --lavender: #9B7BFF;
+      --rose: #FF66A3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(77, 166, 255, 0.12), transparent 35%),
+        radial-gradient(circle at 85% 20%, rgba(155, 123, 255, 0.12), transparent 35%),
+        radial-gradient(circle at 50% 85%, rgba(76, 217, 123, 0.08), transparent 40%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 64px;
+      line-height: 1.65;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .back-link:hover {
+      transform: translateY(-1px);
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .lang-tabs {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .lang-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .lang-btn.active {
+      background: rgba(77, 166, 255, 0.18);
+      color: var(--sky);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .logo-grid {
+      display: inline-grid;
+      grid-template-columns: repeat(3, 18px);
+      gap: 4px;
+      padding: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+      margin-bottom: 18px;
+    }
+
+    .cell {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.28);
+    }
+
+    .cell.empty {
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: none;
+    }
+
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      background: rgba(76, 217, 123, 0.14);
+      color: var(--mint);
+      border: 1px solid rgba(76, 217, 123, 0.3);
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #C7D2FE 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.02rem;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .policy-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .policy-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 28px 30px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    .policy-card.hidden {
+      display: none;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+
+    .lang-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .pill-en {
+      background: rgba(77, 166, 255, 0.15);
+      color: var(--sky);
+      border: 1px solid rgba(77, 166, 255, 0.3);
+    }
+
+    .pill-ru {
+      background: rgba(155, 123, 255, 0.15);
+      color: var(--lavender);
+      border: 1px solid rgba(155, 123, 255, 0.3);
+    }
+
+    .card-header h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .summary-item {
+      background: var(--bg-board);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .summary-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .summary-title.mint { color: var(--mint); }
+    .summary-title.sky { color: var(--sky); }
+    .summary-title.coral { color: var(--coral); }
+
+    .summary-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .policy-section + .policy-section {
+      margin-top: 22px;
+    }
+
+    .policy-section h3 {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .policy-section p {
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+      margin-bottom: 10px;
+    }
+
+    .policy-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .policy-section ul {
+      list-style: none;
+      margin: 8px 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .policy-section li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .policy-section li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 6px;
+      height: 6px;
+      border-radius: 2px;
+      background: var(--sky);
+    }
+
+    strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--sky);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 44px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 600px) {
+      .policy-card {
+        padding: 22px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="top-nav">
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        <span>Назад к загрузкам / Back to Downloads</span>
+      </a>
+
+      <div class="lang-tabs" role="tablist" aria-label="Language filter">
+        <button type="button" class="lang-btn active" data-lang="all">EN + RU</button>
+        <button type="button" class="lang-btn" data-lang="en">English</button>
+        <button type="button" class="lang-btn" data-lang="ru">Русский</button>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="logo-grid" aria-hidden="true">
+        <div class="cell" style="background: var(--coral);"></div>
+        <div class="cell" style="background: var(--coral);"></div>
+        <div class="cell empty"></div>
+        <div class="cell" style="background: var(--amber);"></div>
+        <div class="cell" style="background: var(--mint);"></div>
+        <div class="cell" style="background: var(--mint);"></div>
+        <div class="cell" style="background: var(--sky);"></div>
+        <div class="cell" style="background: var(--sky);"></div>
+        <div class="cell" style="background: var(--lavender);"></div>
+      </div>
+
+      <div class="badge-row">
+        <span class="date-badge">Effective Date: November 16, 2026</span>
+      </div>
+
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">
+        Политика конфиденциальности приложения <strong>Block Breaker</strong> для Android, iOS, iPadOS, Windows, macOS и Linux.
+      </p>
+    </header>
+
+    <main class="policy-stack">
+      <!-- ENGLISH SECTION -->
+      <article id="en" class="policy-card" data-lang-card="en" lang="en">
+        <div class="card-header">
+          <h2>Privacy Policy (English)</h2>
+          <span class="lang-pill pill-en">English</span>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-title mint">Local Storage Only</div>
+            <div class="summary-desc">Game progress, high scores, and theme settings stay on your device.</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-title sky">Anonymous Crash Reports</div>
+            <div class="summary-desc">Mobile apps use Firebase Crashlytics solely to fix crashes and improve stability.</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-title coral">No Personal Data</div>
+            <div class="summary-desc">No accounts, no contacts, no location tracking, and no advertising IDs.</div>
+          </div>
+        </div>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--sky);"></span>1. Overview</h3>
+          <p>
+            This Privacy Policy describes how <strong>Block Breaker</strong> (developed by <strong>dsvag</strong>) handles information when you use our mobile and desktop applications. We respect your privacy and designed Block Breaker to work without user accounts, personal profiles, or behavioral advertising.
+          </p>
+          <p>
+            <strong>Effective Date:</strong> November 16, 2026
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--mint);"></span>2. Information Stored Locally on Your Device</h3>
+          <p>
+            Block Breaker stores your gameplay state and preferences locally on your device using <strong>DataStore Preferences</strong>:
+          </p>
+          <ul>
+            <li>Current board state, game progress, and high scores.</li>
+            <li>Visual theme and appearance preferences.</li>
+          </ul>
+          <p>
+            This local data never leaves your device and is not transmitted to our servers. You can delete it at any time by clearing the app data in your device settings or uninstalling the application.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--amber);"></span>3. Crash Reporting &amp; Diagnostics (Android &amp; iOS)</h3>
+          <p>
+            To identify bugs and keep the game stable, the mobile versions of Block Breaker (Android and iOS / iPadOS) use <strong>Google Firebase Crashlytics</strong>. When an unexpected error or crash occurs, Crashlytics automatically collects anonymous diagnostic metadata, which may include:
+          </p>
+          <ul>
+            <li>Crash stack traces and error logs.</li>
+            <li>Device model, operating system version, and application version.</li>
+            <li>Non-identifying technical installation/crash identifiers and event timestamps.</li>
+          </ul>
+          <p>
+            This diagnostic data is used <strong>solely</strong> to diagnose technical issues and improve application stability. It is not linked to your identity and is never used for advertising or cross-app tracking. For more information, please review the <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy and Security documentation</a>.
+          </p>
+          <p>
+            Desktop builds (Windows, macOS, and Linux) store preferences locally only and do not send crash telemetry.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--coral);"></span>4. Data We Do Not Collect</h3>
+          <p>
+            Block Breaker does <strong>not</strong> collect, access, or share:
+          </p>
+          <ul>
+            <li>Personal identifiers such as your name, email address, phone number, or account credentials.</li>
+            <li>Contacts, photos, files, microphone, or camera data.</li>
+            <li>Precise or approximate geographic location.</li>
+            <li>Advertising identifiers (Google Advertising ID / AAID or Apple IDFA) or third-party ad tracking data.</li>
+          </ul>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--lavender);"></span>5. Children’s Privacy</h3>
+          <p>
+            Block Breaker does not knowingly collect any personal information from children or any other users. Because no personal data is collected, the game can be played safely without registration.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--teal);"></span>6. Changes &amp; Contact Information</h3>
+          <p>
+            We may update this Privacy Policy from time to time if app functionality changes. Any updates will be published on this page with an updated effective date.
+          </p>
+          <p>
+            If you have any questions or requests regarding this Privacy Policy, please contact the developer via email at
+            <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a>
+            or through the official GitHub repository:
+            <a href="https://github.com/dsvag/Block-Breaker" target="_blank" rel="noopener noreferrer">https://github.com/dsvag/Block-Breaker</a>.
+          </p>
+        </section>
+      </article>
+
+      <!-- RUSSIAN SECTION -->
+      <article id="ru" class="policy-card" data-lang-card="ru" lang="ru">
+        <div class="card-header">
+          <h2>Политика конфиденциальности (Русский)</h2>
+          <span class="lang-pill pill-ru">Русский</span>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-title mint">Локальное хранение</div>
+            <div class="summary-desc">Игровой прогресс, рекорды и настройки темы хранятся только на вашем устройстве.</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-title sky">Анонимные отчёты о сбоях</div>
+            <div class="summary-desc">Мобильные версии используют Firebase Crashlytics исключительно для исправления ошибок и повышения стабильности.</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-title coral">Без персональных данных</div>
+            <div class="summary-desc">Мы не собираем личные данные, контакты, геолокацию и рекламные идентификаторы.</div>
+          </div>
+        </div>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--sky);"></span>1. Общие положения</h3>
+          <p>
+            Настоящая Политика конфиденциальности описывает, как приложение <strong>Block Breaker</strong> (разработчик — <strong>dsvag</strong>) обрабатывает информацию при использовании мобильных и настольных версий игры. Приложение разработано без регистрации учётных записей и без рекламного отслеживания.
+          </p>
+          <p>
+            <strong>Дата вступления в силу:</strong> 16 ноября 2026 г.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--mint);"></span>2. Данные, хранящиеся локально на устройстве</h3>
+          <p>
+            Block Breaker сохраняет игровой прогресс и пользовательские настройки исключительно локально на вашем устройстве с помощью <strong>DataStore Preferences</strong>:
+          </p>
+          <ul>
+            <li>Текущее состояние игрового поля, прогресс игры и лучшие результаты.</li>
+            <li>Выбранная тема оформления и параметры интерфейса.</li>
+          </ul>
+          <p>
+            Эти данные не передаются на внешние серверы и остаются под вашим полным контролем. Вы можете удалить их в любой момент, очистив данные приложения в настройках устройства или удалив приложение.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--amber);"></span>3. Отчёты о сбоях и диагностика (Android и iOS)</h3>
+          <p>
+            Для своевременного выявления ошибок и повышения стабильности работы мобильные версии Block Breaker (Android и iOS / iPadOS) используют сервис <strong>Google Firebase Crashlytics</strong>. При возникновении непредвиденного сбоя Crashlytics автоматически собирает исключительно анонимную техническую диагностическую информацию:
+          </p>
+          <ul>
+            <li>Трассировки стека (stack traces) и технические журналы сбоев.</li>
+            <li>Модель устройства, версию операционной системы и версию приложения.</li>
+            <li>Обезличенные технические метаданные сбоя и время возникновения ошибки.</li>
+          </ul>
+          <p>
+            Собранная диагностика используется <strong>исключительно</strong> для устранения ошибок и повышения стабильности приложения. Эти сведения не позволяют установить вашу личность и не используются для рекламы или межсайтового отслеживания. Подробнее о работе сервиса можно узнать в <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">документации по конфиденциальности Firebase</a>.
+          </p>
+          <p>
+            Настольные сборки (Windows, macOS и Linux) хранят данные только локально и не отправляют отчёты о сбоях.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--coral);"></span>4. Данные, которые мы не собираем</h3>
+          <p>
+            Приложение Block Breaker <strong>не</strong> собирает, не запрашивает и не передаёт третьим лицам:
+          </p>
+          <ul>
+            <li>Персональные данные (имя, адрес электронной почты, номер телефона, данные учётной записи).</li>
+            <li>Контакты, фотографии, файлы, данные камеры или микрофона.</li>
+            <li>Точную или приблизительную геолокацию.</li>
+            <li>Рекламные идентификаторы (Google Advertising ID / AAID, Apple IDFA) и данные рекламных трекеров.</li>
+          </ul>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--lavender);"></span>5. Конфиденциальность детей</h3>
+          <p>
+            Block Breaker не осуществляет осознанный сбор персональных данных детей или любых других пользователей. Использование приложения не требует создания профиля или предоставления личной информации.
+          </p>
+        </section>
+
+        <section class="policy-section">
+          <h3><span class="dot" style="background: var(--teal);"></span>6. Изменения политики и контакты</h3>
+          <p>
+            Мы можем периодически обновлять настоящую Политику конфиденциальности при изменении функциональности приложения. Актуальная версия всегда доступна на этой странице с указанием даты вступления в силу.
+          </p>
+          <p>
+            По всем вопросам, связанным с конфиденциальностью и работой приложения, вы можете связаться с разработчиком по электронной почте
+            <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a>
+            или через официальный репозиторий GitHub:
+            <a href="https://github.com/dsvag/Block-Breaker" target="_blank" rel="noopener noreferrer">https://github.com/dsvag/Block-Breaker</a>.
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer>
+      Block Breaker &bull; <a href="index.html">Скачать приложение / Download Page</a> &bull; <a href="mailto:blockbreaker-support@vpestryakov.dev">blockbreaker-support@vpestryakov.dev</a> &bull; <a href="https://github.com/dsvag/Block-Breaker" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll('.lang-btn');
+      var cards = document.querySelectorAll('[data-lang-card]');
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var selected = btn.getAttribute('data-lang');
+
+          buttons.forEach(function (b) {
+            b.classList.toggle('active', b === btn);
+          });
+
+          cards.forEach(function (card) {
+            var cardLang = card.getAttribute('data-lang-card');
+            var visible = selected === 'all' || selected === cardLang;
+            card.classList.toggle('hidden', !visible);
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

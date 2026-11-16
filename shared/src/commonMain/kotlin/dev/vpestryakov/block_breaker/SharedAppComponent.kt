@@ -26,6 +26,9 @@ interface SharedAppComponent : ViewModelGraph {
 
   @DependencyGraph.Factory
   fun interface Factory {
-    fun create(@Provides dataStore: DataStore<Preferences>): SharedAppComponent
+    fun create(
+      @Provides dataStore: DataStore<Preferences>,
+      @Provides crashReporter: CrashReporter,
+    ): SharedAppComponent
   }
 }

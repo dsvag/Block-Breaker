@@ -10,5 +10,6 @@ class App : Application() {
   override fun onCreate() {
     super.onCreate()
     appComponent = createGraphFactory<AppComponent.Factory>().create(this)
+    appComponent.androidCrashReporter.initialize()
   }
 }
