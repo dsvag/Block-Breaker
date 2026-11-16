@@ -9,11 +9,7 @@ pluginManagement {
         includeGroupByRegex("androidx.*")
       }
     }
-    mavenCentral {
-      content {
-        includeGroupByRegex("dev\\.zacsweers\\.metro.*")
-      }
-    }
+    mavenCentral()
 
     gradlePluginPortal()
   }
@@ -30,3 +26,4 @@ dependencyResolutionManagement {
 rootProject.name = "Block Breaker"
 
 include(":app")
+include(":shared")

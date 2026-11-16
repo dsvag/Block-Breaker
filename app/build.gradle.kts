@@ -78,6 +78,7 @@ kotlin {
 }
 
 dependencies {
+  implementation(project(":shared"))
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.compose.animation)
   implementation(libs.androidx.compose.foundation)
